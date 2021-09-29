@@ -9,14 +9,6 @@ router.get("/", (req, res, next) => {
     })
     .catch(next);
 });
-
-router.post("/", (req, res, next) => {
-  Users.add(req.body)
-    .then((newUser) => {
-      res.status(201).json(newUser);
-    })
-    .catch(next);
-});
 /**
   [GET] /api/users
 
