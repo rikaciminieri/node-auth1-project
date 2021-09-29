@@ -10,7 +10,6 @@ router.post("/register", checkUsernameFree, checkPasswordLength, (req, res, next
   const {username, password} = req.body
   const hash = bcrypt.hashSync(password, 8)
   const user = {username, password: hash}
-
   Users.add(user)
   .then(newUser => {
     res.status(201).json(newUser)
@@ -43,7 +42,9 @@ router.post("/register", checkUsernameFree, checkPasswordLength, (req, res, next
 router.post("/login", checkUsernameExists, async (req, res, next) => {
   try {
     const {username, password} = req.body
+  
     if(bcrypt.compareSync(password, req.user.password)) {
+      req.session.user = req.user
       next({status: 200, message: `Welcome ${username}!`})
     } else {
       next({status: 401, message: "Invalid Credentials"})
